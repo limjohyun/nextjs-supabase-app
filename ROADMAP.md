@@ -21,8 +21,8 @@
 - [x] **5. 타입체크 스크립트** — `"typecheck": "tsc --noEmit"` 추가
 - [x] **6. GitHub Actions CI** — `.github/workflows/ci.yml`: push/PR(main) 트리거, Node 20, `npm ci → lint → typecheck → build`
   - 최초 push 후 CI 실패 발견: `lib/supabase/database.types.ts`는 `.gitignore` 대상(Supabase CLI 생성 파일)이라 fresh checkout인 CI에는 없어서 typecheck/build가 깨짐.
-  - 해결: CI에 `npx -y supabase@latest gen types typescript --project-id zqgikmnazgjskodeysuq --schema public > lib/supabase/database.types.ts` 단계 추가(`npm ci` 직후, lint 이전). `SUPABASE_ACCESS_TOKEN`을 env로 주입.
-  - **사용자 액션 필요**: GitHub 저장소 Settings → Secrets and variables → Actions에 `SUPABASE_ACCESS_TOKEN`(https://supabase.com/dashboard/account/tokens 에서 발급한 personal access token) 등록 전까지는 CI가 계속 실패함.
+  - 1차 시도: CI에서 `supabase gen types typescript`로 매 실행마다 생성 — 계정 전체에 접근 가능한 Supabase Management API 토큰(`SUPABASE_ACCESS_TOKEN`)을 public 저장소 secret으로 보관해야 해서 노출 시 피해 범위가 이 프로젝트를 넘어섬. 리스크가 이득보다 크다고 판단해 폐기.
+  - 최종: `database.types.ts`를 `.gitignore`에서 빼고 git에 커밋. secret 불필요, CI는 체크아웃된 파일을 그대로 사용. 스키마 변경 시 로컬에서 재생성 후 커밋해야 함(누락돼도 빌드가 깨지지 않고 타입만 오래됨).
 - [x] **7. 에디터 설정** — `.vscode/settings.json`(저장 시 자동 포맷/ESLint fix, Tailwind IntelliSense `classRegex`), `.vscode/extensions.json`(prettier-vscode / vscode-eslint / vscode-tailwindcss)
 - [x] **8. CLAUDE.md 정합화** — `## Commands`에 `format` / `format:check` / `typecheck` 3줄 추가
 

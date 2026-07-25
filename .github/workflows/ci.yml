@@ -19,11 +19,6 @@ jobs:
 
       - run: npm ci
 
-      - name: Generate Supabase types
-        run: npx -y supabase@latest gen types typescript --project-id zqgikmnazgjskodeysuq --schema public > lib/supabase/database.types.ts
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-
       - run: npm run lint
 
       - run: npm run typecheck

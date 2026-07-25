@@ -44,7 +44,7 @@ The root-level `proxy.ts` is this Next.js version's replacement for the old `mid
 
 ### Database types
 
-`lib/supabase/database.types.ts` is generated output (Supabase CLI / `mcp__supabase__generate_typescript_types`) and is gitignored — regenerate it rather than hand-editing, and don't assume it's present in a fresh checkout. Currently defines `instruments` and `profiles` tables.
+`lib/supabase/database.types.ts` is generated output (Supabase CLI / `mcp__supabase__generate_typescript_types`) and is committed to the repo — regenerate and commit it after schema changes rather than hand-editing (CI does not regenerate it, so a stale file only means stale types, not a broken build). Currently defines `instruments` and `profiles` tables.
 
 ### UI components
 
