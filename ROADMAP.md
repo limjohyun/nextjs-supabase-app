@@ -31,18 +31,18 @@
 
 ## 검증
 
-1. `npm run lint` 통과
-2. `npm run typecheck` 통과
-3. `npm run format:check` 통과 (전체 재포맷 커밋 이후 diff 없어야 함)
-4. `npm run build` 통과
-5. 더미 파일로 포맷 깨뜨린 뒤 커밋 → pre-commit 훅이 자동 수정하는지 확인 후 되돌림
-6. (사용자 확인 후) push하여 GitHub Actions 성공 확인
+1. [x] `npm run lint` 통과
+2. [x] `npm run typecheck` 통과
+3. [x] `npm run format:check` 통과 (전체 재포맷 커밋 이후 diff 없어야 함)
+4. [x] `npm run build` 통과
+5. [x] 더미 파일로 포맷 깨뜨린 뒤 커밋 → pre-commit 훅이 자동 수정하는지 확인 후 되돌림
+6. [ ] (사용자 확인 후) push하여 GitHub Actions 성공 확인
 
 ## 완료 후 저장할 체크리스트 (메모리)
 
-- [ ] `npm run lint` 통과
-- [ ] `npm run typecheck` 통과
-- [ ] `npm run format:check` 통과
-- [ ] `npm run build` 통과
-- [ ] Husky pre-commit 훅 실동작 확인 (더미 커밋)
+- [x] `npm run lint` 통과
+- [x] `npm run typecheck` 통과
+- [x] `npm run format:check` 통과
+- [x] `npm run build` 통과
+- [x] Husky pre-commit 훅 실동작 확인 (더미 커밋)
 - [ ] CI(GitHub Actions) push 후 초록불 (push는 사용자 확인 후에만)
