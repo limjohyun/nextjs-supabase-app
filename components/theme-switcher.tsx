@@ -18,6 +18,7 @@ const ThemeSwitcher = () => {
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 하이드레이션 불일치 방지를 위한 mounted 플래그로, 외부 상태 동기화가 아니라 서버/클라이언트 첫 렌더 분기 목적임
     setMounted(true);
   }, []);
 
