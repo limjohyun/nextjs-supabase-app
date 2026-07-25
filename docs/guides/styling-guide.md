@@ -1,19 +1,20 @@
 # 스타일링 가이드
 
-이 문서는 TailwindCSS v4 + shadcn/ui를 활용한 스타일링 규칙과 모범 사례를 제공합니다.
+이 문서는 TailwindCSS v3 + shadcn/ui를 활용한 스타일링 규칙과 모범 사례를 제공합니다.
 
-## 🎨 기술 스택 개요
+## 🎨 기술 스택 개요 (이 프로젝트의 실제 설치 버전 기준)
 
 ### 핵심 스타일링 도구
 
-- **TailwindCSS v4**: 유틸리티 기반 CSS 프레임워크
+- **TailwindCSS 3.4**: 유틸리티 기반 CSS 프레임워크 (v4 아님)
 - **shadcn/ui**: Radix UI 기반 컴포넌트 라이브러리 (new-york style)
 - **next-themes**: 다크모드 지원
-- **tw-animate-css**: 애니메이션 라이브러리
+- **tailwindcss-animate**: 애니메이션 플러그인 (`tw-animate-css`가 아님)
 - **CSS Variables**: 동적 테마 시스템
-- **prettier-plugin-tailwindcss**: 자동 클래스 정렬
 
-## 🚀 TailwindCSS v4 사용 규칙
+Prettier나 `prettier-plugin-tailwindcss`는 설치되어 있지 않습니다 — 클래스 정렬은 자동화되지 않으니 수동으로 아래 순서를 지켜주세요.
+
+## 🚀 TailwindCSS 사용 규칙
 
 ### 기본 원칙
 
@@ -242,7 +243,7 @@ export function ThemeToggle() {
 
 ### CSS 변수 기반 색상
 
-`src/app/globals.css`에 정의된 색상 변수:
+`app/globals.css`에 정의된 색상 변수:
 
 ```css
 :root {
@@ -283,17 +284,12 @@ export function ThemeToggle() {
 
 ## ✨ 애니메이션 가이드
 
-### tw-animate-css 활용
+### tailwindcss-animate 플러그인
+
+`tailwind.config.ts`의 `plugins`에 등록되어 있으면 `animate-in`/`animate-out` 계열 유틸리티(예: `fade-in-0`, `slide-in-from-top-2`)를 바로 쓸 수 있습니다. shadcn/ui의 Dropdown, Dialog 등에서 이미 이 방식으로 애니메이션을 적용합니다.
 
 ```tsx
-import 'tw-animate-css'
-
-// ✅ 내장 애니메이션 사용
-<div className="animate-fadeIn">페이드 인</div>
-<div className="animate-slideUp">슬라이드 업</div>
-<div className="animate-bounce">바운스</div>
-
-// ✅ Tailwind transition 활용
+// ✅ Tailwind 기본 transition 활용
 <button className="transition-all duration-200 hover:scale-105 hover:shadow-lg">
   호버 효과
 </button>

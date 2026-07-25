@@ -1,6 +1,6 @@
-# Next.js 15.5.3 개발 지침
+# Next.js App Router 개발 지침
 
-이 문서는 Claude Code에서 Next.js 15.5.3 프로젝트를 개발할 때 따라야 할 핵심 규칙과 가이드라인을 제공합니다.
+이 문서는 Claude Code에서 Next.js App Router 프로젝트를 개발할 때 따라야 할 핵심 규칙과 가이드라인을 제공합니다. 아래 패턴들은 Next.js 15에서 도입되어 이 프로젝트가 실제로 쓰는 Next.js 16에서도 유효합니다 — 다만 버전을 못박은 문구는 실제 설치 버전(16.x) 기준으로 다시 확인하세요.
 
 ## 🚀 필수 규칙 (엄격 준수)
 
@@ -56,7 +56,7 @@ export function InteractiveChart({ data }: { data: Analytics[] }) {
 ### 🔄 New: async request APIs 처리
 
 ```typescript
-// 🔄 Next.js 15.5.3 새로운 방식
+// 🔄 async request APIs (Next.js 15+, 이 프로젝트의 lib/supabase/server.ts도 동일 패턴 사용)
 import { cookies, headers } from 'next/headers'
 
 export default async function Page({
@@ -172,7 +172,7 @@ export async function POST(request: Request) {
 // ✅ 세밀한 캐시 제어
 export async function getProductData(id: string) {
   const data = await fetch(`/api/products/${id}`, {
-    // 🔄 Next.js 15.5.3 새로운 캐시 옵션
+    // 🔄 fetch 캐시 옵션 (revalidate + 태그 기반 무효화)
     next: {
       revalidate: 3600, // 1시간 캐시
       tags: [`product-${id}`, 'products'], // 태그 기반 무효화
@@ -195,6 +195,8 @@ export async function updateProduct(id: string, data: ProductData) {
 ```
 
 ### Turbopack 최적화 설정
+
+이 프로젝트의 `next.config.ts`는 현재 `cacheComponents: true`만 설정되어 있고 아래 옵션들은 적용되어 있지 않습니다. 필요해지면 실제 설치된 Next.js 버전의 문서를 확인한 뒤(`experimental.turbo` 키 이름이 버전마다 바뀌었습니다) 추가하세요.
 
 ```typescript
 // next.config.ts
@@ -269,32 +271,24 @@ export default function UserForm() {
 }
 ```
 
-### 미들웨어 Node.js Runtime
+### `middleware.ts`가 아니라 `proxy.ts`
+
+이 프로젝트가 쓰는 Next.js 버전은 미들웨어 파일 컨벤션을 `middleware.ts`/`middleware()`에서 `proxy.ts`/`proxy()`로 바꿨습니다. 새 미들웨어 로직이 필요하면 `middleware.ts`를 만들지 말고 루트의 `proxy.ts`(실제 세션 갱신 로직은 `lib/supabase/proxy.ts`의 `updateSession()`)를 수정하세요.
 
 ```typescript
-// middleware.ts
-import { NextRequest, NextResponse } from 'next/server'
+// proxy.ts (실제 이 프로젝트의 형태)
+import { updateSession } from "@/lib/supabase/proxy";
+import { type NextRequest } from "next/server";
 
-// ⚠️ Edge Runtime에서 Node.js Runtime으로 변경
+export async function proxy(request: NextRequest) {
+  return await updateSession(request);
+}
+
 export const config = {
-  runtime: 'nodejs', // 🔄 새로운 기본값
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
-}
-
-export function middleware(request: NextRequest) {
-  // 🔄 Node.js API 사용 가능
-  const crypto = require('crypto')
-  const hash = crypto.createHash('sha256')
-
-  // 인증 로직
-  const token = request.cookies.get('auth-token')?.value
-
-  if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  return NextResponse.next()
-}
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
+};
 ```
 
 ### 🔄 New: unauthorized/forbidden API
@@ -491,23 +485,16 @@ function UserProfile({ user }: { user: User }) {
 
 ## 코드 품질 체크리스트
 
-개발 완료 후 다음 명령어들을 반드시 실행하세요:
+이 프로젝트의 `package.json`에는 `dev`/`build`/`start`/`lint`만 정의되어 있습니다(`typecheck`, `format:check`, `check-all` 같은 스크립트는 없습니다). 개발 완료 후 다음을 실행하세요:
 
 ```bash
-# 🚀 필수: 타입 체크
-npm run typecheck
-
 # 🚀 필수: 린트 검사
 npm run lint
 
-# ✅ 권장: 포맷 검사
-npm run format:check
-
-# 🚀 필수: 통합 검사
-npm run check-all
-
-# 🚀 필수: 빌드 테스트
+# 🚀 필수: 빌드 테스트 (타입 에러도 여기서 함께 잡힘)
 npm run build
 ```
 
-이 지침을 따라 Next.js 15.5.3의 모든 기능을 최대한 활용하여 현대적이고 성능 최적화된 애플리케이션을 개발하세요.
+타입만 별도로 확인하려면 `npx tsc --noEmit`을 직접 실행하세요(별도 스크립트로 등록되어 있지 않음).
+
+이 지침을 따라 Next.js App Router의 기능을 최대한 활용하여 현대적이고 성능 최적화된 애플리케이션을 개발하세요.
