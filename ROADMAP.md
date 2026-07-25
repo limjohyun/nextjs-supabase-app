@@ -20,6 +20,9 @@
 - [x] **4. Husky + lint-staged** — 설치, `"prepare": "husky"`, `.husky/pre-commit`에 `npx lint-staged`, `package.json`에 lint-staged 설정 추가
 - [x] **5. 타입체크 스크립트** — `"typecheck": "tsc --noEmit"` 추가
 - [x] **6. GitHub Actions CI** — `.github/workflows/ci.yml`: push/PR(main) 트리거, Node 20, `npm ci → lint → typecheck → build`
+  - 최초 push 후 CI 실패 발견: `lib/supabase/database.types.ts`는 `.gitignore` 대상(Supabase CLI 생성 파일)이라 fresh checkout인 CI에는 없어서 typecheck/build가 깨짐.
+  - 해결: CI에 `npx -y supabase@latest gen types typescript --project-id zqgikmnazgjskodeysuq --schema public > lib/supabase/database.types.ts` 단계 추가(`npm ci` 직후, lint 이전). `SUPABASE_ACCESS_TOKEN`을 env로 주입.
+  - **사용자 액션 필요**: GitHub 저장소 Settings → Secrets and variables → Actions에 `SUPABASE_ACCESS_TOKEN`(https://supabase.com/dashboard/account/tokens 에서 발급한 personal access token) 등록 전까지는 CI가 계속 실패함.
 - [x] **7. 에디터 설정** — `.vscode/settings.json`(저장 시 자동 포맷/ESLint fix, Tailwind IntelliSense `classRegex`), `.vscode/extensions.json`(prettier-vscode / vscode-eslint / vscode-tailwindcss)
 - [x] **8. CLAUDE.md 정합화** — `## Commands`에 `format` / `format:check` / `typecheck` 3줄 추가
 
