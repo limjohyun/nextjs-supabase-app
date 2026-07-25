@@ -54,6 +54,6 @@ shadcn/ui is configured via `components.json` (style: `new-york`, base color: `n
 
 `app/instruments/page.tsx` is the one non-boilerplate example page: an async Server Component wrapped in `Suspense`, fetching directly from Supabase (`supabase.from("instruments").select()`) with no client-side data layer.
 
-## Known issue: `docs/guides/` is stale/foreign content
+## `docs/guides/`
 
-The Markdown files under `docs/guides/` (`project-structure.md`, `deployment-guide.md`, `user-guide.md`, etc.) describe a **different application** — a Notion-integrated invoicing app with `/clients`, `/templates`, `/dashboard`, PDF export, Vitest, and a `src/`-based layout. None of that exists in this repo, and claims like "TailwindCSS v4" contradict the actually-installed `tailwindcss@3.4.19`. These docs were apparently copied in from an unrelated project — do not treat them as authoritative for this codebase.
+`docs/guides/` (`project-structure.md`, `component-patterns.md`, `styling-guide.md`, `nextjs-15.md`) originated from an unrelated project template and has been edited to match this repo's actual state (real folder layout, real installed versions/scripts, corrective notes where the original claims didn't apply). Keep it in sync when tooling/scripts change — e.g. new `package.json` scripts, `.gitignore` changes, dependency swaps. `component-patterns.md`'s code samples (`UserCard`, `ProductPage`, `CartProvider`, etc.) are generic illustrative patterns, not references to files that exist in this repo.

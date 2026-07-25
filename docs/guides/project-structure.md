@@ -81,7 +81,7 @@ lib/
     ├── client.ts             # 브라우저 클라이언트
     ├── server.ts              # 서버(RSC/Server Action) 클라이언트
     ├── proxy.ts               # updateSession() — 루트 proxy.ts에서 사용
-    └── database.types.ts       # Supabase CLI로 생성되는 타입 (gitignore 대상, 직접 수정 금지)
+    └── database.types.ts       # Supabase CLI로 생성되는 타입 (git에 커밋됨, 직접 수정 금지 — 스키마 변경 시 재생성 후 커밋)
 ```
 
 새 유틸리티는 실제로 여러 곳에서 재사용될 때만 `lib/`에 파일을 추가하세요. `env.ts`, `types/`, `hooks/`, `schemas/`, `api/` 같은 하위 구조는 현재 존재하지 않으며, 필요해지기 전까지 미리 만들지 마세요.

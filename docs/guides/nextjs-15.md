@@ -485,16 +485,22 @@ function UserProfile({ user }: { user: User }) {
 
 ## 코드 품질 체크리스트
 
-이 프로젝트의 `package.json`에는 `dev`/`build`/`start`/`lint`만 정의되어 있습니다(`typecheck`, `format:check`, `check-all` 같은 스크립트는 없습니다). 개발 완료 후 다음을 실행하세요:
+이 프로젝트의 `package.json`에는 `dev`/`build`/`start`/`lint`/`typecheck`/`format`/`format:check` 스크립트가 정의되어 있습니다. 개발 완료 후 다음을 실행하세요:
 
 ```bash
 # 🚀 필수: 린트 검사
 npm run lint
 
-# 🚀 필수: 빌드 테스트 (타입 에러도 여기서 함께 잡힘)
+# 🚀 필수: 타입 검사
+npm run typecheck
+
+# 🚀 필수: 포맷 검사 (자동 수정은 npm run format)
+npm run format:check
+
+# 🚀 필수: 빌드 테스트
 npm run build
 ```
 
-타입만 별도로 확인하려면 `npx tsc --noEmit`을 직접 실행하세요(별도 스크립트로 등록되어 있지 않음).
+`git commit` 시 husky + lint-staged가 스테이징된 파일에 ESLint `--fix`/Prettier를 자동 적용합니다(`.husky/pre-commit`).
 
 이 지침을 따라 Next.js App Router의 기능을 최대한 활용하여 현대적이고 성능 최적화된 애플리케이션을 개발하세요.

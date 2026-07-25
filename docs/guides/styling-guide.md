@@ -12,7 +12,7 @@
 - **tailwindcss-animate**: 애니메이션 플러그인 (`tw-animate-css`가 아님)
 - **CSS Variables**: 동적 테마 시스템
 
-Prettier나 `prettier-plugin-tailwindcss`는 설치되어 있지 않습니다 — 클래스 정렬은 자동화되지 않으니 수동으로 아래 순서를 지켜주세요.
+`prettier` + `prettier-plugin-tailwindcss`가 설치되어 있어 `npm run format`(또는 커밋 시 husky+lint-staged)이 Tailwind 클래스 순서를 자동 정렬합니다. 아래 순서는 참고용이며 수동으로 맞출 필요는 없습니다.
 
 ## 🚀 TailwindCSS 사용 규칙
 
